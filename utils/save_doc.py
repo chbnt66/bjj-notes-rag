@@ -43,7 +43,7 @@ def save_document(doc: JJBDocument) -> str:
     return base_path_json, base_path_txt
 
 
-def save_doc_db(note_path : str,path_txt = "data/txt" ) : 
+def save_doc_db(full_path : str) : 
     
     from langchain.chat_models import init_chat_model
     from langchain_huggingface import HuggingFaceEmbeddings
@@ -63,11 +63,12 @@ def save_doc_db(note_path : str,path_txt = "data/txt" ) :
     )
 
     nb_docs = vector_store._collection.count()
-    note_txt = open(path_txt+'/'+note_path, 'r', encoding='utf-8')
+    note_txt = open(full_path, 'r', encoding='utf-8')
     content = note_txt.read()
-    date = note_path[:10]
+    filename = os.path.basename(full_path) 
+    date = filename[:10]
     date = date[-2:] + '/' + date[-5:-3] + '/' + date[:4]
-    theme = note_path[11:-4].replace('_', ' ')
+    theme = filename[11:-4].replace('_', ' ')
     doc = Document(id=str(nb_docs+1), page_content=content, metadata={"title": theme, 'date': date})
 
     vector_store.add_documents([doc])
