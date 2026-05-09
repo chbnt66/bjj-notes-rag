@@ -107,7 +107,9 @@ def handle_message(user_id: str, text: str = None, image_url: str = None) -> str
             )
             filepath_json, filepath_txt = save_document(doc)
 
-            save_doc_bool = save_doc_db(filepath_txt) # Save doc in db 
+            print(f"\n{'#'*20}\n filepath_txt = {filepath_txt} \n{'#'*20}\n")
+
+            save_doc_bool = save_doc_db(filepath_txt + ".txt") # Save doc in db 
             
             sessions[user_id] = SessionState()  # reset session
 
@@ -118,7 +120,7 @@ def handle_message(user_id: str, text: str = None, image_url: str = None) -> str
                 f"📝 `{filepath_txt}.txt`\n\n"
                 f"*{doc.title}* — {doc.date}\n"
                 f"🖼️ {len(doc.extracted_texts)} image(s) processed\n\n"
-                f"💾 Added to the jjb database."
+                f"💾 Added to the jjb database.\n\n"
                 f"Send *GO* to start a new task."
                 )
 
